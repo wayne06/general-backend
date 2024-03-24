@@ -1,15 +1,14 @@
 package top.wayne06.generalbackend.common;
 
 /**
- * 返回工具类
+ * Return result utils
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne
  */
 public class ResultUtils {
 
     /**
-     * 成功
+     * success
      *
      * @param data
      * @param <T>
@@ -20,7 +19,7 @@ public class ResultUtils {
     }
 
     /**
-     * 失败
+     * error
      *
      * @param errorCode
      * @return
@@ -30,7 +29,7 @@ public class ResultUtils {
     }
 
     /**
-     * 失败
+     * error
      *
      * @param code
      * @param message
@@ -41,7 +40,7 @@ public class ResultUtils {
     }
 
     /**
-     * 失败
+     * error
      *
      * @param errorCode
      * @return

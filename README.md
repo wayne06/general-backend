@@ -112,21 +112,19 @@ Only 1 minute to build the back-end of the content site. You can also quickly de
             store-type: redis
     ```
 
-3）Remove the exclude parameter in the `@SpringBootApplication` annotation at the beginning of the `MainApplication` class.
+3. Remove the exclude parameter in the `@SpringBootApplication` annotation at the beginning of the `MainApplication` class.
 
-Before:
     ```java
         @SpringBootApplication(exclude = {RedisAutoConfiguration.class})
-    ```
-
-After:
-    ```java
-        @SpringBootApplication
+        public class MainApplication {
+        
+        }
     ```
 
 ### Elasticsearch search engine
 
 1. Modify the Elasticsearch configuration to your own in `application.yml`.
+
     ```yml
         spring:
           elasticsearch:
@@ -136,6 +134,7 @@ After:
     ```
 
 2. Copy the contents of the `sql/post_es_mapping.json` file and create the index by calling Elasticsearch interface or the Kibana Dev Tools(equivalent to creating tables in a database).
+
     ```
         PUT post_v1
         {
@@ -146,6 +145,6 @@ After:
 3. Start a synchronized task to synchronize the posts from database to elasticsearch. Find the `FullSyncPostToEs` and `IncSyncPostToEs` files in directory `job`, uncomment the `@Component`, run the program again to trigger the synchronization.
 
     ```java
-        // todo 取消注释开启任务
+        // TODO uncomment the `@Component` to start the task
         //@Component
     ```

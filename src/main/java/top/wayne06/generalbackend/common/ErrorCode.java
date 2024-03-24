@@ -1,29 +1,59 @@
 package top.wayne06.generalbackend.common;
 
 /**
- * 自定义错误码
+ * Customized error code
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne
  */
 public enum ErrorCode {
 
+    /**
+     * success
+     */
     SUCCESS(0, "ok"),
-    PARAMS_ERROR(40000, "请求参数错误"),
-    NOT_LOGIN_ERROR(40100, "未登录"),
-    NO_AUTH_ERROR(40101, "无权限"),
-    NOT_FOUND_ERROR(40400, "请求数据不存在"),
-    FORBIDDEN_ERROR(40300, "禁止访问"),
-    SYSTEM_ERROR(50000, "系统内部异常"),
-    OPERATION_ERROR(50001, "操作失败");
 
     /**
-     * 状态码
+     * parameters error
+     */
+    PARAMS_ERROR(40000, "parameters error"),
+
+    /**
+     * not login error
+     */
+    NOT_LOGIN_ERROR(40100, "not login error"),
+
+    /**
+     * no authority error
+     */
+    NO_AUTH_ERROR(40101, "no authority error"),
+
+    /**
+     * not found error
+     */
+    NOT_FOUND_ERROR(40400, "not found error"),
+
+    /**
+     * forbidden error
+     */
+    FORBIDDEN_ERROR(40300, "forbidden error"),
+
+    /**
+     * system error
+     */
+    SYSTEM_ERROR(50000, "system error"),
+
+    /**
+     * operation error
+     */
+    OPERATION_ERROR(50001, "operation error");
+
+    /**
+     * code
      */
     private final int code;
 
     /**
-     * 信息
+     * message
      */
     private final String message;
 
