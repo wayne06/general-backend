@@ -3,15 +3,14 @@ package top.wayne06.generalbackend.exception;
 import top.wayne06.generalbackend.common.ErrorCode;
 
 /**
- * 自定义异常类
+ * Customized exception
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author https://github.com/wayne06
  */
 public class BusinessException extends RuntimeException {
 
     /**
-     * 错误码
+     * error code
      */
     private final int code;
 

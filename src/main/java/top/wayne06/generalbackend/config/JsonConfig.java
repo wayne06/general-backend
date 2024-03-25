@@ -14,7 +14,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
  * @author wayne
  */
 @JsonComponent
-//@EnableAutoConfiguration
+@EnableAutoConfiguration
 public class JsonConfig {
 
     /**

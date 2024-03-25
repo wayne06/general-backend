@@ -1,57 +1,40 @@
 package top.wayne06.generalbackend.job.cycle;
 
-import top.wayne06.generalbackend.esdao.PostEsDao;
+import cn.hutool.core.collection.CollUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import top.wayne06.generalbackend.job.SyncPostToEs;
 import top.wayne06.generalbackend.mapper.PostMapper;
-import top.wayne06.generalbackend.model.dto.post.PostEsDTO;
 import top.wayne06.generalbackend.model.entity.Post;
+
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
-import cn.hutool.core.collection.CollUtil;
-import org.springframework.scheduling.annotation.Scheduled;
 
 /**
- * 增量同步帖子到 es
+ * Incremental synchronization of post from DB to ES.
+ * TODO add @Component to the class to enable the task
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author https://github.com/wayne06
  */
-// todo 取消注释开启任务
-//@Component
 @Slf4j
-public class IncSyncPostToEs {
+public class IncSyncPostToEs extends SyncPostToEs {
 
     @Resource
     private PostMapper postMapper;
 
-    @Resource
-    private PostEsDao postEsDao;
-
     /**
-     * 每分钟执行一次
+     * execute every minute
      */
     @Scheduled(fixedRate = 60 * 1000)
     public void run() {
-        // 查询近 5 分钟内的数据
-        Date fiveMinutesAgoDate = new Date(new Date().getTime() - 5 * 60 * 1000L);
+        // query data within the past 5 minutes
+        Date fiveMinutesAgoDate = new Date(System.currentTimeMillis() - 5 * 60 * 1000L);
         List<Post> postList = postMapper.listPostWithDelete(fiveMinutesAgoDate);
         if (CollUtil.isEmpty(postList)) {
             log.info("no inc post");
             return;
         }
-        List<PostEsDTO> postEsDTOList = postList.stream()
-                .map(PostEsDTO::objToDto)
-                .collect(Collectors.toList());
-        final int pageSize = 500;
-        int total = postEsDTOList.size();
-        log.info("IncSyncPostToEs start, total {}", total);
-        for (int i = 0; i < total; i += pageSize) {
-            int end = Math.min(i + pageSize, total);
-            log.info("sync from {} to {}", i, end);
-            postEsDao.saveAll(postEsDTOList.subList(i, end));
-        }
-        log.info("IncSyncPostToEs end, total {}", total);
+        saveToEs(postList, "IncSyncPostToEs");
     }
 }

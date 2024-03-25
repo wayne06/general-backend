@@ -3,15 +3,14 @@ package top.wayne06.generalbackend.exception;
 import top.wayne06.generalbackend.common.ErrorCode;
 
 /**
- * 抛异常工具类
+ * Throw exception utils
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author https://github.com/wayne06
  */
 public class ThrowUtils {
 
     /**
-     * 条件成立则抛异常
+     * throw exception if condition is met
      *
      * @param condition
      * @param runtimeException
@@ -23,7 +22,7 @@ public class ThrowUtils {
     }
 
     /**
-     * 条件成立则抛异常
+     * throw exception if condition is met
      *
      * @param condition
      * @param errorCode
@@ -33,7 +32,7 @@ public class ThrowUtils {
     }
 
     /**
-     * 条件成立则抛异常
+     * throw exception if condition is met
      *
      * @param condition
      * @param errorCode

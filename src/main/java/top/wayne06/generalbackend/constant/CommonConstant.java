@@ -1,10 +1,9 @@
 package top.wayne06.generalbackend.constant;
 
 /**
- * 通用常量
+ * Common Constant
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne
  */
 public interface CommonConstant {
 
@@ -17,5 +16,41 @@ public interface CommonConstant {
      * 降序
      */
     String SORT_ORDER_DESC = " descend";
+
+    /**
+     * ip unknown
+     */
+    String UNKNOWN = "unknown";
+
+    /**
+     * request header : x-forwarded-for
+     */
+    String X_FORWARDED_FOR = "x-forwarded-for";
+
+    /**
+     * request header : Proxy-Client-IP
+     */
+    String PROXY_CLIENT_IP = "Proxy-Client-IP";
+
+    /**
+     * request header : WL-Proxy-Client-IP
+     */
+    String WL_PROXY_CLIENT_IP = "WL-Proxy-Client-IP";
+
+    /**
+     * local host ip
+     */
+    String LOCALHOST_IP = "127.0.0.1";
+
+    /**
+     * number 15
+     */
+    int FIFTEEN = 15;
+
+
+    /**
+     * comma
+     */
+    String COMMA = ",";
 
 }

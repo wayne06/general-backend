@@ -59,7 +59,7 @@ public class UserController {
     @Resource
     private WxOpenConfig wxOpenConfig;
 
-    // region 登录相关
+    // region login related
 
     /**
      * 用户注册
@@ -155,7 +155,7 @@ public class UserController {
 
     // endregion
 
-    // region 增删改查
+    // region CRUD
 
     /**
      * 创建用户

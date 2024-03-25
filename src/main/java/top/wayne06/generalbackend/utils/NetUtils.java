@@ -1,53 +1,54 @@
 package top.wayne06.generalbackend.utils;
 
-import java.net.InetAddress;
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+
+import static top.wayne06.generalbackend.constant.CommonConstant.*;
 
 /**
- * 网络工具类
+ * Network utils
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne
  */
 public class NetUtils {
 
     /**
-     * 获取客户端 IP 地址
+     * get client IP address
      *
      * @param request
      * @return
      */
     public static String getIpAddress(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
+        String ip = request.getHeader(X_FORWARDED_FOR);
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader(PROXY_CLIENT_IP);
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader(WL_PROXY_CLIENT_IP);
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
-            if (ip.equals("127.0.0.1")) {
-                // 根据网卡取本机配置的 IP
-                InetAddress inet = null;
+            if (ip.equals(LOCALHOST_IP)) {
+                // get ip based on the network card
+                InetAddress inetAddress = null;
                 try {
-                    inet = InetAddress.getLocalHost();
+                    inetAddress = InetAddress.getLocalHost();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (inet != null) {
-                    ip = inet.getHostAddress();
+                if (inetAddress != null) {
+                    ip = inetAddress.getHostAddress();
                 }
             }
         }
-        // 多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
-        if (ip != null && ip.length() > 15) {
-            if (ip.indexOf(",") > 0) {
-                ip = ip.substring(0, ip.indexOf(","));
+        // In the case of multiple proxy, the 1st ip is the real ip of the client. Multiple ips are divided to ','
+        if (ip != null && ip.length() > FIFTEEN) {
+            if (ip.indexOf(COMMA) > 0) {
+                ip = ip.substring(0, ip.indexOf(COMMA));
             }
         }
         if (ip == null) {
-            return "127.0.0.1";
+            return LOCALHOST_IP;
         }
         return ip;
     }

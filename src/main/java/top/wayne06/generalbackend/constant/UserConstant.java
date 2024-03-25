@@ -1,32 +1,31 @@
 package top.wayne06.generalbackend.constant;
 
 /**
- * 用户常量
+ * User constant
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne06
  */
 public interface UserConstant {
 
     /**
-     * 用户登录态键
+     * the key for user login state
      */
     String USER_LOGIN_STATE = "user_login";
 
-    //  region 权限
+    //  region authority
 
     /**
-     * 默认角色
+     * default role
      */
     String DEFAULT_ROLE = "user";
 
     /**
-     * 管理员角色
+     * admin role
      */
     String ADMIN_ROLE = "admin";
 
     /**
-     * 被封号
+     * banned role
      */
     String BAN_ROLE = "ban";
 

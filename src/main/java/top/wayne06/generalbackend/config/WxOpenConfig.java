@@ -9,10 +9,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 微信开放平台配置
+ * Weixin open platform configuration
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author https://github.com/wayne06
  */
 @Slf4j
 @Configuration
@@ -20,14 +19,23 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class WxOpenConfig {
 
+    /**
+     * appId
+     */
     private String appId;
 
+    /**
+     * appSecret
+     */
     private String appSecret;
 
+    /**
+     * wxMpService
+     */
     private WxMpService wxMpService;
 
     /**
-     * 单例模式（不用 @Bean 是为了防止和公众号的 service 冲突）
+     * singleton (did not use @Bean is to prevent the conflict with the service of Official Account Platform)
      *
      * @return
      */
