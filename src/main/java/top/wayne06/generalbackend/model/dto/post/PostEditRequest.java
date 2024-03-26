@@ -3,15 +3,15 @@ package top.wayne06.generalbackend.model.dto.post;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Data;
+import top.wayne06.generalbackend.common.AbstractRequest;
 
 /**
- * 编辑请求
+ * request of edit post
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne06
  */
 @Data
-public class PostEditRequest implements Serializable {
+public class PostEditRequest extends AbstractRequest implements Serializable {
 
     /**
      * id
@@ -19,17 +19,17 @@ public class PostEditRequest implements Serializable {
     private Long id;
 
     /**
-     * 标题
+     * title
      */
     private String title;
 
     /**
-     * 内容
+     * content
      */
     private String content;
 
     /**
-     * 标签列表
+     * tag list
      */
     private List<String> tags;
 

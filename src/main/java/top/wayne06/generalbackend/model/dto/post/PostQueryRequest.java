@@ -7,10 +7,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 查询请求
+ * request of query post
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne06
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -27,37 +26,37 @@ public class PostQueryRequest extends PageRequest implements Serializable {
     private Long notId;
 
     /**
-     * 搜索词
+     * search text
      */
     private String searchText;
 
     /**
-     * 标题
+     * title
      */
     private String title;
 
     /**
-     * 内容
+     * content
      */
     private String content;
 
     /**
-     * 标签列表
+     * tag list
      */
     private List<String> tags;
 
     /**
-     * 至少有一个标签
+     * 1 tag at least
      */
     private List<String> orTags;
 
     /**
-     * 创建用户 id
+     * user id
      */
     private Long userId;
 
     /**
-     * 收藏用户 id
+     * favour user id
      */
     private Long favourUserId;
 

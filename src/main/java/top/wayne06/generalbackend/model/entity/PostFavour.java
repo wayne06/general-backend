@@ -9,10 +9,9 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 帖子收藏
+ * Post Favor
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne06
  **/
 @TableName(value = "post_favour")
 @Data
@@ -25,22 +24,22 @@ public class PostFavour implements Serializable {
     private Long id;
 
     /**
-     * 帖子 id
+     * post id
      */
     private Long postId;
 
     /**
-     * 创建用户 id
+     * user id
      */
     private Long userId;
 
     /**
-     * 创建时间
+     * create time
      */
     private Date createTime;
 
     /**
-     * 更新时间
+     * update time
      */
     private Date updateTime;
 

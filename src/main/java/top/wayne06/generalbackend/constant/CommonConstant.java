@@ -53,4 +53,29 @@ public interface CommonConstant {
      */
     String COMMA = ",";
 
+    /**
+     * jpeg type
+     */
+    String JPEG = "jpeg";
+
+    /**
+     * jpg type
+     */
+    String JPG = "jpg";
+
+    /**
+     * svg type
+     */
+    String SVG = "svg";
+
+    /**
+     * png type
+     */
+    String PNG = "png";
+
+    /**
+     * webp type
+     */
+    String WEBP = "webp";
+
 }

@@ -5,46 +5,45 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 已登录用户视图（脱敏）
+ * logged in user view object (desensitization)
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne06
  **/
 @Data
 public class LoginUserVO implements Serializable {
 
     /**
-     * 用户 id
+     * user id
      */
     private Long id;
 
     /**
-     * 用户昵称
+     * username
      */
     private String userName;
 
     /**
-     * 用户头像
+     * user avatar
      */
     private String userAvatar;
 
     /**
-     * 用户简介
+     * user profile
      */
     private String userProfile;
 
     /**
-     * 用户角色：user/admin/ban
+     * user role：user/admin/ban
      */
     private String userRole;
 
     /**
-     * 创建时间
+     * create time
      */
     private Date createTime;
 
     /**
-     * 更新时间
+     * update time
      */
     private Date updateTime;
 

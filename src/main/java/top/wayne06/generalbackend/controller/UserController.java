@@ -43,10 +43,9 @@ import org.springframework.web.bind.annotation.RestController;
 import static top.wayne06.generalbackend.service.impl.UserServiceImpl.SALT;
 
 /**
- * 用户接口
+ * User controller
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne06
  */
 @RestController
 @RequestMapping("/user")
@@ -62,7 +61,7 @@ public class UserController {
     // region login related
 
     /**
-     * 用户注册
+     * user register
      *
      * @param userRegisterRequest
      * @return
@@ -83,7 +82,7 @@ public class UserController {
     }
 
     /**
-     * 用户登录
+     * user login
      *
      * @param userLoginRequest
      * @param request
@@ -104,7 +103,7 @@ public class UserController {
     }
 
     /**
-     * 用户登录（微信开放平台）
+     * user login (wechat open platform)
      */
     @GetMapping("/login/wx_open")
     public BaseResponse<LoginUserVO> userLoginByWxOpen(HttpServletRequest request, HttpServletResponse response,
@@ -117,17 +116,17 @@ public class UserController {
             String unionId = userInfo.getUnionId();
             String mpOpenId = userInfo.getOpenid();
             if (StringUtils.isAnyBlank(unionId, mpOpenId)) {
-                throw new BusinessException(ErrorCode.SYSTEM_ERROR, "登录失败，系统错误");
+                throw new BusinessException(ErrorCode.SYSTEM_ERROR, "Login failed. System error.");
             }
             return ResultUtils.success(userService.userLoginByMpOpen(userInfo, request));
         } catch (Exception e) {
             log.error("userLoginByWxOpen error", e);
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "登录失败，系统错误");
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "Login failed. System error.");
         }
     }
 
     /**
-     * 用户注销
+     * user logout
      *
      * @param request
      * @return
@@ -142,7 +141,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前登录用户
+     * get current login user
      *
      * @param request
      * @return
@@ -158,7 +157,7 @@ public class UserController {
     // region CRUD
 
     /**
-     * 创建用户
+     * add user
      *
      * @param userAddRequest
      * @param request
@@ -172,7 +171,6 @@ public class UserController {
         }
         User user = new User();
         BeanUtils.copyProperties(userAddRequest, user);
-        // 默认密码 12345678
         String defaultPassword = "12345678";
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + defaultPassword).getBytes());
         user.setUserPassword(encryptPassword);
@@ -182,7 +180,7 @@ public class UserController {
     }
 
     /**
-     * 删除用户
+     * delete user
      *
      * @param deleteRequest
      * @param request
@@ -199,7 +197,7 @@ public class UserController {
     }
 
     /**
-     * 更新用户
+     * update user
      *
      * @param userUpdateRequest
      * @param request
@@ -220,7 +218,7 @@ public class UserController {
     }
 
     /**
-     * 根据 id 获取用户（仅管理员）
+     * get user by id (admin only)
      *
      * @param id
      * @param request
@@ -238,7 +236,7 @@ public class UserController {
     }
 
     /**
-     * 根据 id 获取包装类
+     * get user VO by id
      *
      * @param id
      * @param request
@@ -252,7 +250,7 @@ public class UserController {
     }
 
     /**
-     * 分页获取用户列表（仅管理员）
+     * get user list in pagination (admin only)
      *
      * @param userQueryRequest
      * @param request
@@ -270,7 +268,7 @@ public class UserController {
     }
 
     /**
-     * 分页获取用户封装列表
+     * get user VO list in pagination
      *
      * @param userQueryRequest
      * @param request
@@ -284,7 +282,7 @@ public class UserController {
         }
         long current = userQueryRequest.getCurrent();
         long size = userQueryRequest.getPageSize();
-        // 限制爬虫
+        // restrict crawlers
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
         Page<User> userPage = userService.page(new Page<>(current, size),
                 userService.getQueryWrapper(userQueryRequest));
@@ -297,7 +295,7 @@ public class UserController {
     // endregion
 
     /**
-     * 更新个人信息
+     * update my info
      *
      * @param userUpdateMyRequest
      * @param request

@@ -11,10 +11,12 @@ import top.wayne06.generalbackend.model.dto.file.UploadFileRequest;
 import top.wayne06.generalbackend.model.entity.User;
 import top.wayne06.generalbackend.model.enums.FileUploadBizEnum;
 import top.wayne06.generalbackend.service.UserService;
+
 import java.io.File;
 import java.util.Arrays;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,11 +25,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static top.wayne06.generalbackend.constant.CommonConstant.*;
+
 /**
- * 文件接口
+ * File controller
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne06
  */
 @RestController
 @RequestMapping("/file")
@@ -41,7 +44,7 @@ public class FileController {
     private CosManager cosManager;
 
     /**
-     * 文件上传
+     * file upload
      *
      * @param multipartFile
      * @param uploadFileRequest
@@ -58,24 +61,24 @@ public class FileController {
         }
         validFile(multipartFile, fileUploadBizEnum);
         User loginUser = userService.getLoginUser(request);
-        // 文件目录：根据业务、用户来划分
+        // file path: divide by business and user
         String uuid = RandomStringUtils.randomAlphanumeric(8);
         String filename = uuid + "-" + multipartFile.getOriginalFilename();
         String filepath = String.format("/%s/%s/%s", fileUploadBizEnum.getValue(), loginUser.getId(), filename);
         File file = null;
         try {
-            // 上传文件
+            // file upload
             file = File.createTempFile(filepath, null);
             multipartFile.transferTo(file);
             cosManager.putObject(filepath, file);
-            // 返回可访问地址
+            // return the access address
             return ResultUtils.success(FileConstant.COS_HOST + filepath);
         } catch (Exception e) {
             log.error("file upload error, filepath = " + filepath, e);
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传失败");
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "Upload failed.");
         } finally {
             if (file != null) {
-                // 删除临时文件
+                // delete temporary file
                 boolean delete = file.delete();
                 if (!delete) {
                     log.error("file delete error, filepath = {}", filepath);
@@ -85,23 +88,21 @@ public class FileController {
     }
 
     /**
-     * 校验文件
+     * check file
      *
      * @param multipartFile
-     * @param fileUploadBizEnum 业务类型
+     * @param fileUploadBizEnum business type
      */
     private void validFile(MultipartFile multipartFile, FileUploadBizEnum fileUploadBizEnum) {
-        // 文件大小
         long fileSize = multipartFile.getSize();
-        // 文件后缀
         String fileSuffix = FileUtil.getSuffix(multipartFile.getOriginalFilename());
         final long ONE_M = 1024 * 1024L;
         if (FileUploadBizEnum.USER_AVATAR.equals(fileUploadBizEnum)) {
             if (fileSize > ONE_M) {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "文件大小不能超过 1M");
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "The file size cannot exceed 1M.");
             }
-            if (!Arrays.asList("jpeg", "jpg", "svg", "png", "webp").contains(fileSuffix)) {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "文件类型错误");
+            if (!Arrays.asList(JPEG, JPG, SVG, PNG, WEBP).contains(fileSuffix)) {
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "File type error.");
             }
         }
     }

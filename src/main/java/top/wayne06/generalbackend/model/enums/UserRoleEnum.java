@@ -6,16 +6,26 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
- * 用户角色枚举
+ * user role enum
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne06
  */
 public enum UserRoleEnum {
 
-    USER("用户", "user"),
-    ADMIN("管理员", "admin"),
-    BAN("被封号", "ban");
+    /**
+     * user
+     */
+    USER("user", "user"),
+
+    /**
+     * admin
+     */
+    ADMIN("admin", "admin"),
+
+    /**
+     * ban
+     */
+    BAN("ban", "ban");
 
     private final String text;
 
@@ -27,7 +37,7 @@ public enum UserRoleEnum {
     }
 
     /**
-     * 获取值列表
+     * get values
      *
      * @return
      */
@@ -36,7 +46,7 @@ public enum UserRoleEnum {
     }
 
     /**
-     * 根据 value 获取枚举
+     * get enum by value
      *
      * @param value
      * @return

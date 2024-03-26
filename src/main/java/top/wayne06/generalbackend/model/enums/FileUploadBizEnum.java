@@ -6,14 +6,16 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
- * 文件上传业务类型枚举
+ * file upload business type enum
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author wayne06
  */
 public enum FileUploadBizEnum {
 
-    USER_AVATAR("用户头像", "user_avatar");
+    /**
+     * user avatar
+     */
+    USER_AVATAR("user avatar", "user_avatar");
 
     private final String text;
 
@@ -25,7 +27,7 @@ public enum FileUploadBizEnum {
     }
 
     /**
-     * 获取值列表
+     * get values
      *
      * @return
      */
@@ -34,7 +36,7 @@ public enum FileUploadBizEnum {
     }
 
     /**
-     * 根据 value 获取枚举
+     * get enum by value
      *
      * @param value
      * @return

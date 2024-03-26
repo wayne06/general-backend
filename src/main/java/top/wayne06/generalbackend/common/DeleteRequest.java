@@ -9,7 +9,7 @@ import lombok.Data;
  * @author wayne06
  */
 @Data
-public class DeleteRequest implements Serializable {
+public class DeleteRequest extends AbstractRequest implements Serializable {
 
     /**
      * record id
