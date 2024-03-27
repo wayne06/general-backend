@@ -10,14 +10,14 @@ import top.wayne06.generalbackend.model.entity.PostFavour;
 import org.apache.ibatis.annotations.Param;
 
 /**
- * 帖子收藏数据库操作
+ * operation in database for post favour
  *
  * @author wayne06
  */
 public interface PostFavourMapper extends BaseMapper<PostFavour> {
 
     /**
-     * 分页查询收藏帖子列表
+     * get favour posts in pagination
      *
      * @param page
      * @param queryWrapper

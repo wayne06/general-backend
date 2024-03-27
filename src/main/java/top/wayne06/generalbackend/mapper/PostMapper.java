@@ -6,14 +6,17 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 帖子数据库操作
+ * operation in database for post handling
  *
  * @author wayne06
  */
 public interface PostMapper extends BaseMapper<Post> {
 
     /**
-     * 查询帖子列表（包括已被删除的数据）
+     * get post list (include deleted)
+     *
+     * @param minUpdateTime
+     * @return
      */
     List<Post> listPostWithDelete(Date minUpdateTime);
 

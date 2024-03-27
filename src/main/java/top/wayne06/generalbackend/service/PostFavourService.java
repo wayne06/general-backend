@@ -9,14 +9,14 @@ import top.wayne06.generalbackend.model.entity.PostFavour;
 import top.wayne06.generalbackend.model.entity.User;
 
 /**
- * 帖子收藏服务
+ * Post favour service
  *
  * @author wayne06
  */
 public interface PostFavourService extends IService<PostFavour> {
 
     /**
-     * 帖子收藏
+     * post favour
      *
      * @param postId
      * @param loginUser
@@ -25,18 +25,17 @@ public interface PostFavourService extends IService<PostFavour> {
     int doPostFavour(long postId, User loginUser);
 
     /**
-     * 分页获取用户收藏的帖子列表
+     * get favour posts in pagination
      *
      * @param page
      * @param queryWrapper
      * @param favourUserId
      * @return
      */
-    Page<Post> listFavourPostByPage(IPage<Post> page, Wrapper<Post> queryWrapper,
-                                    long favourUserId);
+    Page<Post> listFavourPostByPage(IPage<Post> page, Wrapper<Post> queryWrapper, long favourUserId);
 
     /**
-     * 帖子收藏（内部服务）
+     * post favour (inner service)
      *
      * @param userId
      * @param postId

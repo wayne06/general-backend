@@ -78,4 +78,14 @@ public interface CommonConstant {
      */
     String WEBP = "webp";
 
+    /**
+     * plaintext: raw
+     */
+    String RAW = "raw";
+
+    /**
+     * encrypt: aes (advanced encryption standard)
+     */
+    String AES = "aes";
+
 }

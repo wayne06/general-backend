@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 帖子收藏接口
+ * Post Favour controller
  *
  * @author wayne06
  */
@@ -43,11 +43,11 @@ public class PostFavourController {
     private UserService userService;
 
     /**
-     * 收藏 / 取消收藏
+     * favour / un-favour
      *
      * @param postFavourAddRequest
      * @param request
-     * @return resultNum 收藏变化数
+     * @return resultNum change of favour number
      */
     @PostMapping("/")
     public BaseResponse<Integer> doPostFavour(@RequestBody PostFavourAddRequest postFavourAddRequest,
@@ -55,7 +55,7 @@ public class PostFavourController {
         if (postFavourAddRequest == null || postFavourAddRequest.getPostId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        // 登录才能操作
+        // logged in user only
         final User loginUser = userService.getLoginUser(request);
         long postId = postFavourAddRequest.getPostId();
         int result = postFavourService.doPostFavour(postId, loginUser);
@@ -63,7 +63,7 @@ public class PostFavourController {
     }
 
     /**
-     * 获取我收藏的帖子列表
+     * get my favourite posts in pagination
      *
      * @param postQueryRequest
      * @param request
@@ -85,7 +85,7 @@ public class PostFavourController {
     }
 
     /**
-     * 获取用户收藏的帖子列表
+     * get someone's favourite posts in pagination
      *
      * @param postFavourQueryRequest
      * @param request

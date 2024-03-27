@@ -5,11 +5,17 @@ import java.util.List;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * 帖子 ES 操作
+ * operate posts in elasticsearch
  *
  * @author wayne06
  */
 public interface PostEsDao extends ElasticsearchRepository<PostEsDTO, Long> {
 
+    /**
+     * find posts by user id
+     *
+     * @param userId
+     * @return
+     */
     List<PostEsDTO> findByUserId(Long userId);
 }

@@ -4,7 +4,7 @@ import top.wayne06.generalbackend.model.entity.PostThumb;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
- * 帖子点赞数据库操作
+ * operation in database for post thumb
  *
  * @author wayne06
  */

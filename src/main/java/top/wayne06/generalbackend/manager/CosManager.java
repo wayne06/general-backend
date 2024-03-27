@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 /**
- * Cos 对象存储操作
+ * Object storage operation (COS: Cloud Object Storage)
  *
  * @author wayne06
  */
@@ -23,10 +23,10 @@ public class CosManager {
     private COSClient cosClient;
 
     /**
-     * 上传对象
+     * pub object with file path
      *
-     * @param key 唯一键
-     * @param localFilePath 本地文件路径
+     * @param key unique key
+     * @param localFilePath local file path
      * @return
      */
     public PutObjectResult putObject(String key, String localFilePath) {
@@ -36,10 +36,10 @@ public class CosManager {
     }
 
     /**
-     * 上传对象
+     * pub object with file
      *
-     * @param key 唯一键
-     * @param file 文件
+     * @param key unique key
+     * @param file file
      * @return
      */
     public PutObjectResult putObject(String key, File file) {

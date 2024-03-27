@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import top.wayne06.generalbackend.model.entity.User;
 
 /**
- * 用户数据库操作
+ * operation in database for user handling
  *
  * @author wayne06
  */

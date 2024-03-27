@@ -5,14 +5,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import top.wayne06.generalbackend.model.entity.User;
 
 /**
- * 帖子点赞服务
+ * post thumb service
  *
  * @author wayne06
  */
 public interface PostThumbService extends IService<PostThumb> {
 
     /**
-     * 点赞
+     * post thumb
      *
      * @param postId
      * @param loginUser
@@ -21,7 +21,7 @@ public interface PostThumbService extends IService<PostThumb> {
     int doPostThumb(long postId, User loginUser);
 
     /**
-     * 帖子点赞（内部服务）
+     * post thumb (inner service)
      *
      * @param userId
      * @param postId

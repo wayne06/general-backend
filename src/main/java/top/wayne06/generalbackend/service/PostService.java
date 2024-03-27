@@ -10,14 +10,14 @@ import top.wayne06.generalbackend.model.vo.PostVO;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 帖子服务
+ * post service
  *
  * @author wayne06
  */
 public interface PostService extends IService<Post> {
 
     /**
-     * 校验
+     * check post validity
      *
      * @param post
      * @param add
@@ -25,7 +25,7 @@ public interface PostService extends IService<Post> {
     void validPost(Post post, boolean add);
 
     /**
-     * 获取查询条件
+     * get query wrapper
      *
      * @param postQueryRequest
      * @return
@@ -33,7 +33,7 @@ public interface PostService extends IService<Post> {
     QueryWrapper<Post> getQueryWrapper(PostQueryRequest postQueryRequest);
 
     /**
-     * 从 ES 查询
+     * search from es
      *
      * @param postQueryRequest
      * @return
@@ -41,7 +41,7 @@ public interface PostService extends IService<Post> {
     Page<Post> searchFromEs(PostQueryRequest postQueryRequest);
 
     /**
-     * 获取帖子封装
+     * get post vo
      *
      * @param post
      * @param request
@@ -50,7 +50,7 @@ public interface PostService extends IService<Post> {
     PostVO getPostVO(Post post, HttpServletRequest request);
 
     /**
-     * 分页获取帖子封装
+     * get post vo in pagination
      *
      * @param postPage
      * @param request

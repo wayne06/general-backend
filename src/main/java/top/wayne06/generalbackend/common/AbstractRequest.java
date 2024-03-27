@@ -12,4 +12,5 @@ public abstract class AbstractRequest {
      * id
      */
     private Long id;
+
 }
