@@ -21,6 +21,7 @@ import top.wayne06.generalbackend.model.vo.UserVO;
 import top.wayne06.generalbackend.service.PostService;
 import top.wayne06.generalbackend.service.UserService;
 import top.wayne06.generalbackend.utils.SqlUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.collection.CollUtil;
 import org.apache.commons.lang3.ObjectUtils;
@@ -47,7 +49,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.stereotype.Service;
 
 /**
- * 帖子服务实现
+ * post service implement
  *
  * @author wayne06
  */
@@ -75,25 +77,19 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         String title = post.getTitle();
         String content = post.getContent();
         String tags = post.getTags();
-        // 创建时，参数不能为空
+        // parameter can not be null
         if (add) {
             ThrowUtils.throwIf(StringUtils.isAnyBlank(title, content, tags), ErrorCode.PARAMS_ERROR);
         }
-        // 有参数则校验
+        // check parameters validation
         if (StringUtils.isNotBlank(title) && title.length() > 80) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "标题过长");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Title too long.");
         }
         if (StringUtils.isNotBlank(content) && content.length() > 8192) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "内容过长");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Content too long.");
         }
     }
 
-    /**
-     * 获取查询包装类
-     *
-     * @param postQueryRequest
-     * @return
-     */
     @Override
     public QueryWrapper<Post> getQueryWrapper(PostQueryRequest postQueryRequest) {
         QueryWrapper<Post> queryWrapper = new QueryWrapper<>();
@@ -109,7 +105,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         List<String> tagList = postQueryRequest.getTags();
         Long userId = postQueryRequest.getUserId();
         Long notId = postQueryRequest.getNotId();
-        // 拼接查询条件
+        // build up query condition
         if (StringUtils.isNotBlank(searchText)) {
             queryWrapper.and(qw -> qw.like("title", searchText).or().like("content", searchText));
         }
@@ -265,8 +261,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         }
         // 1. 关联查询用户信息
         Set<Long> userIdSet = postList.stream().map(Post::getUserId).collect(Collectors.toSet());
-        Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
-                .collect(Collectors.groupingBy(User::getId));
+        Map<Long, List<User>> userIdUserListMap =
+                userService.listByIds(userIdSet).stream().collect(Collectors.groupingBy(User::getId));
         // 2. 已登录，获取用户点赞、收藏状态
         Map<Long, Boolean> postIdHasThumbMap = new HashMap<>();
         Map<Long, Boolean> postIdHasFavourMap = new HashMap<>();

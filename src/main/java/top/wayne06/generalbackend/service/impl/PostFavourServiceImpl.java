@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 帖子收藏服务实现
+ * post favour service implement
  *
  * @author wayne06
  */
@@ -31,7 +31,7 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
     private PostService postService;
 
     /**
-     * 帖子收藏
+     * post favour
      *
      * @param postId
      * @param loginUser
@@ -39,7 +39,7 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
      */
     @Override
     public int doPostFavour(long postId, User loginUser) {
-        // 判断是否存在
+        // check if post exists
         Post post = postService.getById(postId);
         if (post == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);

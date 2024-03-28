@@ -10,7 +10,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.stereotype.Component;
 
 /**
- * 消息处理器
+ * Message handler
  *
  * @author wayne06
  **/
@@ -20,7 +20,7 @@ public class MessageHandler implements WxMpMessageHandler {
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map,
             WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        String content = "我是复读机：" + wxMpXmlMessage.getContent();
+        String content = "Echo: " + wxMpXmlMessage.getContent();
         return WxMpXmlOutMessage.TEXT().content(content)
                 .fromUser(wxMpXmlMessage.getToUser())
                 .toUser(wxMpXmlMessage.getFromUser())

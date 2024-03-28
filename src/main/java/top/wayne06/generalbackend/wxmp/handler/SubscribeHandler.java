@@ -10,7 +10,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.stereotype.Component;
 
 /**
- * 关注处理器
+ * Subscribe handler
  *
  * @author wayne06
  **/
@@ -20,8 +20,8 @@ public class SubscribeHandler implements WxMpMessageHandler {
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map,
             WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        final String content = "感谢关注";
-        // 调用接口，返回验证码
+        final String content = "Thanks for subscribing.";
+        // call api, return verification code.
         return WxMpXmlOutMessage.TEXT().content(content)
                 .fromUser(wxMpXmlMessage.getToUser())
                 .toUser(wxMpXmlMessage.getFromUser())

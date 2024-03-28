@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 微信公众号路由
+ * Weixin official account router
  *
  * @author wayne06
  */
@@ -34,20 +34,20 @@ public class WxMpMsgRouter {
     @Bean
     public WxMpMessageRouter getWxMsgRouter() {
         WxMpMessageRouter router = new WxMpMessageRouter(wxMpService);
-        // 消息
+        // message
         router.rule()
                 .async(false)
                 .msgType(XmlMsgType.TEXT)
                 .handler(messageHandler)
                 .end();
-        // 关注
+        // subscribe
         router.rule()
                 .async(false)
                 .msgType(XmlMsgType.EVENT)
                 .event(EventType.SUBSCRIBE)
                 .handler(subscribeHandler)
                 .end();
-        // 点击按钮
+        // click menu
         router.rule()
                 .async(false)
                 .msgType(XmlMsgType.EVENT)

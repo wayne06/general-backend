@@ -14,10 +14,12 @@ import top.wayne06.generalbackend.model.vo.LoginUserVO;
 import top.wayne06.generalbackend.model.vo.UserVO;
 import top.wayne06.generalbackend.service.UserService;
 import top.wayne06.generalbackend.utils.SqlUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +29,7 @@ import org.springframework.util.DigestUtils;
 import top.wayne06.generalbackend.constant.UserConstant;
 
 /**
- * 用户服务实现
+ * user service implement
  *
  * @author wayne06
  */
@@ -36,43 +38,41 @@ import top.wayne06.generalbackend.constant.UserConstant;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     /**
-     * 盐值，混淆密码
+     * SALT
      */
-    public static final String SALT = "yupi";
+    public static final String SALT = "tlas";
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
-        // 1. 校验
+        // 1. check parameters
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Blank parameters.");
         }
         if (userAccount.length() < 4) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户账号过短");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "User account too short.");
         }
         if (userPassword.length() < 8 || checkPassword.length() < 8) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户密码过短");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "User password too short.");
         }
-        // 密码和校验密码相同
         if (!userPassword.equals(checkPassword)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "两次输入的密码不一致");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "The passwords in two inputs are inconsistent.");
         }
         synchronized (userAccount.intern()) {
-            // 账户不能重复
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("userAccount", userAccount);
             long count = this.baseMapper.selectCount(queryWrapper);
             if (count > 0) {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号重复");
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "User account exists.");
             }
-            // 2. 加密
+            // 2. encrypt password
             String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
-            // 3. 插入数据
+            // 3. add to db
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
             boolean saveResult = this.save(user);
             if (!saveResult) {
-                throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
+                throw new BusinessException(ErrorCode.SYSTEM_ERROR, "Register failed. DB error.");
             }
             return user.getId();
         }
@@ -80,29 +80,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request) {
-        // 1. 校验
+        // 1. check parameters
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Blank parameters.");
         }
         if (userAccount.length() < 4) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号错误");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "User account too short.");
         }
         if (userPassword.length() < 8) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "User password too short.");
         }
-        // 2. 加密
+        // 2. encrypt password
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
-        // 查询用户是否存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userAccount", userAccount);
         queryWrapper.eq("userPassword", encryptPassword);
         User user = this.baseMapper.selectOne(queryWrapper);
-        // 用户不存在
         if (user == null) {
             log.info("user login failed, userAccount cannot match userPassword");
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在或密码错误");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "User not exist or password error.");
         }
-        // 3. 记录用户的登录态
+        // 3. set user login state to session
         request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, user);
         return this.getLoginUserVO(user);
     }
@@ -111,17 +109,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public LoginUserVO userLoginByMpOpen(WxOAuth2UserInfo wxOAuth2UserInfo, HttpServletRequest request) {
         String unionId = wxOAuth2UserInfo.getUnionId();
         String mpOpenId = wxOAuth2UserInfo.getOpenid();
-        // 单机锁
         synchronized (unionId.intern()) {
-            // 查询用户是否已存在
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("unionId", unionId);
             User user = this.getOne(queryWrapper);
-            // 被封号，禁止登录
             if (user != null && UserRoleEnum.BAN.getValue().equals(user.getUserRole())) {
-                throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "该用户已被封，禁止登录");
+                throw new BusinessException(ErrorCode.FORBIDDEN_ERROR, "User banned.");
             }
-            // 用户不存在则创建
+            // create user if not exist
             if (user == null) {
                 user = new User();
                 user.setUnionId(unionId);
@@ -130,30 +125,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 user.setUserName(wxOAuth2UserInfo.getNickname());
                 boolean result = this.save(user);
                 if (!result) {
-                    throw new BusinessException(ErrorCode.SYSTEM_ERROR, "登录失败");
+                    throw new BusinessException(ErrorCode.SYSTEM_ERROR, "Login failed. DB error.");
                 }
             }
-            // 记录用户的登录态
+            // set user login state to session
             request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, user);
             return getLoginUserVO(user);
         }
     }
 
-    /**
-     * 获取当前登录用户
-     *
-     * @param request
-     * @return
-     */
     @Override
     public User getLoginUser(HttpServletRequest request) {
-        // 先判断是否已登录
+        // check if logged in
         Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User currentUser = (User) userObj;
         if (currentUser == null || currentUser.getId() == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
-        // 从数据库查询（追求性能的话可以注释，直接走缓存）
+        // query from db (can also be queried from cache)
         long userId = currentUser.getId();
         currentUser = this.getById(userId);
         if (currentUser == null) {
@@ -162,34 +151,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return currentUser;
     }
 
-    /**
-     * 获取当前登录用户（允许未登录）
-     *
-     * @param request
-     * @return
-     */
     @Override
     public User getLoginUserPermitNull(HttpServletRequest request) {
-        // 先判断是否已登录
+        // check if logged in
         Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User currentUser = (User) userObj;
         if (currentUser == null || currentUser.getId() == null) {
             return null;
         }
-        // 从数据库查询（追求性能的话可以注释，直接走缓存）
+        // query from db (can also be queried from cache)
         long userId = currentUser.getId();
         return this.getById(userId);
     }
 
-    /**
-     * 是否为管理员
-     *
-     * @param request
-     * @return
-     */
     @Override
     public boolean isAdmin(HttpServletRequest request) {
-        // 仅管理员可查询
         Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
         User user = (User) userObj;
         return isAdmin(user);
@@ -200,17 +176,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return user != null && UserRoleEnum.ADMIN.getValue().equals(user.getUserRole());
     }
 
-    /**
-     * 用户注销
-     *
-     * @param request
-     */
     @Override
     public boolean userLogout(HttpServletRequest request) {
         if (request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE) == null) {
-            throw new BusinessException(ErrorCode.OPERATION_ERROR, "未登录");
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "Not login.");
         }
-        // 移除登录态
+        // remove user login state from session
         request.getSession().removeAttribute(UserConstant.USER_LOGIN_STATE);
         return true;
     }
@@ -246,7 +217,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest) {
         if (userQueryRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数为空");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Blank request parameters.");
         }
         Long id = userQueryRequest.getId();
         String unionId = userQueryRequest.getUnionId();

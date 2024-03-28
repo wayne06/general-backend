@@ -10,7 +10,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import org.springframework.stereotype.Component;
 
 /**
- * 事件处理器
+ * Event handler
  *
  * @author wayne06
  **/
@@ -20,7 +20,7 @@ public class EventHandler implements WxMpMessageHandler {
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService,
             WxSessionManager wxSessionManager) throws WxErrorException {
-        final String content = "您点击了菜单";
+        final String content = "Menu be clicked.";
         // 调用接口，返回验证码
         return WxMpXmlOutMessage.TEXT().content(content)
                 .fromUser(wxMpXmlMessage.getToUser())
