@@ -22,6 +22,7 @@ public interface PostThumbService extends IService<PostThumb> {
 
     /**
      * post thumb (inner service)
+     * todo
      *
      * @param userId
      * @param postId

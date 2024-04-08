@@ -96,6 +96,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if (postQueryRequest == null) {
             return queryWrapper;
         }
+        //TODO
         String searchText = postQueryRequest.getSearchText();
         String sortField = postQueryRequest.getSortField();
         String sortOrder = postQueryRequest.getSortOrder();
